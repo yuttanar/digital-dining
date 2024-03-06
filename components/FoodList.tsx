@@ -69,20 +69,31 @@ export default function FoodList() {
 
     const sendMessages = (food: IFood, text: string) => {
         const flexMessage = renderOrderFlex(food)
-        liff
-            .sendMessages([
+        if (liff.isInClient()) {
+            liff
+                .sendMessages([
+                    {
+                        type: "text",
+                        text: text,
+                    },
+                    flexMessage
+                ])
+                .then(() => {
+                    liff.closeWindow();
+                })
+                .catch((err) => {
+                    console.log("error", err);
+                });
+        } else {
+            liff.shareTargetPicker([
                 {
                     type: "text",
                     text: text,
                 },
                 flexMessage
             ])
-            .then(() => {
-                liff.closeWindow();
-            })
-            .catch((err) => {
-                console.log("error", err);
-            });
+        }
+
     }
     return (
         <div>
@@ -116,12 +127,12 @@ export default function FoodList() {
                                 </div>
                             </div>
                             <div className="mt-2">
-                                <div
+                                <button
                                     onClick={() => handleSelect(food)}
-                                    className="relative flex items-center justify-center border rounded-br-lg rounded-bl-lg border-transparent bg-gray-800 px-8 py-2 text-sm font-medium text-white hover:bg-gray-600"
+                                    className="w-full relative flex items-center justify-center border rounded-br-lg rounded-bl-lg border-transparent bg-gray-800 px-8 py-2 text-sm font-medium text-white hover:bg-gray-600"
                                 >
                                     เมนูนี้ ฉันเลือกนาย 👆<span className="sr-only">, {food.title}</span>
-                                </div>
+                                </button>
                             </div>
                         </div>
                     ))}
