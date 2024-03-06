@@ -1,4 +1,5 @@
 import FoodList from "@/components/FoodList";
+import Footer from "@/components/Footer";
 import UserProfile from "@/components/UserProfile";
 
 const Home = () => {
@@ -6,6 +7,7 @@ const Home = () => {
     <div>
       <UserProfile />
       <FoodList />
+      <Footer />
     </div>
   );
 }
